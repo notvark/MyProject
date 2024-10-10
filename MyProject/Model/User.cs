@@ -1,9 +1,25 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace MyProject.Model
 {
     public class User : IdentityUser
     {
-        //Remove the comment in school, testing whether it is in sync.
+        public int UserId { get; set; }  // Primary Key
+        public string Username { get; set; }
+        public string ProfilePicture { get; set; }
+        public string Biography { get; set; }
+        public char BiologicalSex { get; set; }
+        public string Name { get; set; }
+        public int ForumAmount { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        // Relationships
+        public List<Post> Posts { get; set; }
+        public List<PostComment> PostComments { get; set; }
+        public List<Note> Notes { get; set; }
+        public List<Chat> SentChats { get; set; }  // User sending the chat
+        public List<Chat> ReceivedChats { get; set; }  // User receiving the chat
     }
 }
