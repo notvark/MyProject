@@ -6,7 +6,7 @@ namespace MyProject.Model
 {
     public class Post
     {
-        public int PostId { get; set; }  // Primary Key
+        public int Id { get; set; }  // Primary Key
         public DateTime PostCreatedAt { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

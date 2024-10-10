@@ -21,5 +21,3 @@ namespace MyProject.Context
         }
     }
 }
-
-

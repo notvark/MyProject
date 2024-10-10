@@ -2,7 +2,7 @@
 {
     public class PostComment
     {
-        public int PostCommentId { get; set; }  // Primary Key
+        public int Id { get; set; }  // Primary Key
         public string Comment { get; set; }
         public DateTime CommentSentTime { get; set; }
 

@@ -2,7 +2,7 @@
 {
     public class Chat
     {
-        public int ChatId { get; set; }  // Primary Key
+        public int Id { get; set; }  // Primary Key
         public string Message { get; set; }
         public DateTime SentDateTime { get; set; }  // Renamed to match diagram
 
