@@ -7,7 +7,6 @@ namespace MyProject.Model
     public class User : IdentityUser
     {
         public int Id { get; set; }  // Primary Key
-        public string Username { get; set; }
         public string ProfilePicture { get; set; }
         public string Biography { get; set; }
         public char BiologicalSex { get; set; }
@@ -21,5 +20,7 @@ namespace MyProject.Model
         public List<Note> Notes { get; set; }
         public List<Chat> SentChats { get; set; }  // User sending the chat
         public List<Chat> ReceivedChats { get; set; }  // User receiving the chat
+        public List<Follower> FollowedUsers { get; set; }
+        public List<Follower> FollowingUsers { get; set; }
     }
 }
