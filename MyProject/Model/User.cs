@@ -7,11 +7,12 @@ namespace MyProject.Model
     public class User : IdentityUser
     {
         public string? ProfilePicture { get; set; }
-        public string Biography { get; set; }
-        public char BiologicalSex { get; set; }
-        public string Name { get; set; }
-        public int ForumAmount { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string? Biography { get; set; }
+        public char? BiologicalSex { get; set; }
+        public string? Name { get; set; }
+        public int? ForumAmount { get; set; }
+        public DateTime? CreatedAt { get; set; }
+
 
         // Relationships
         public List<Post> Posts { get; set; }

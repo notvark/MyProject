@@ -11,7 +11,7 @@ using MyProject.Context;
 namespace MyProject.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241015121130_InitialCreate")]
+    [Migration("20241015212525_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -285,17 +285,16 @@ namespace MyProject.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Biography")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<char>("BiologicalSex")
+                    b.Property<char?>("BiologicalSex")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -305,7 +304,7 @@ namespace MyProject.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ForumAmount")
+                    b.Property<int?>("ForumAmount")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
@@ -315,7 +314,6 @@ namespace MyProject.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
