@@ -2,10 +2,8 @@
 {
     public class Note
     {
-        public int Id { get; set; }  // Primary Key
+        public int Id { get; set; }  
         public string NoteContent { get; set; }
-
-        // Navigation Property (User who created the note)
         public User User { get; set; }
     }
 }

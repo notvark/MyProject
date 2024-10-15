@@ -6,8 +6,7 @@ namespace MyProject.Model
 {
     public class User : IdentityUser
     {
-        public int Id { get; set; }  // Primary Key
-        public string ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
         public string Biography { get; set; }
         public char BiologicalSex { get; set; }
         public string Name { get; set; }
