@@ -18,29 +18,30 @@
 <PageTitle>Register</PageTitle>
 <StatusMessage Message="@statusMessage" IsError="@isError" />
 
-<div class="card">
-    <div class="card-body bg-light">
-        <h4 class="card-title">Register</h4>
-
-        <EditForm OnValidSubmit="RegisterUser" Model="Model" FormName="registerForm">
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label for="email" class="form-label">Email</label>
-                    <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email" />
+<div class="d-flex justify-content-center align-items-center vh-100 custom-primary-background-color">
+    <div class="card" style="max-width: 500px; width: 100%;">
+        <div class="card-body custom-primary-login-card">
+            <h4 class="card-title custom-primary-white-text-color">Register</h4>
+            <EditForm OnValidSubmit="RegisterUser" Model="Model" FormName="registerForm">
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label for="email" class="form-label custom-primary-white-text-color">Email</label>
+                        <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email" />
+                    </div>
+                    <div class="col-md-12">
+                        <label for="password" class="form-label custom-primary-white-text-color">Password</label>
+                        <InputText type="password" class="form-control" placeholder="Password" @bind-Value="Model.Password" />
+                    </div>
+                    <div class="col-md-12">
+                        <label for="name" class="form-label custom-primary-white-text-color">Confirm Password</label>
+                        <InputText type="password" class="form-control" placeholder="Confirm Password" @bind-Value="Model.ConfirmPassword" />
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="password" class="form-label">Password</label>
-                    <InputText type="password" class="form-control" placeholder="Password" @bind-Value="Model.Password" />
-                </div>
-                <div class="col-md-6">
-                    <label for="name" class="form-label">Confirm Password</label>
-                    <InputText type="password" class="form-control" placeholder="Confirm Password" @bind-Value="Model.ConfirmPassword" />
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
-                </div>
-            </div>
-        </EditForm>
+            </EditForm>
+        </div>
     </div>
 </div>
 

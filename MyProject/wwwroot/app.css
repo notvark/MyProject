@@ -27,3 +27,32 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+body { /* Overall body color */
+    background-color: #242424 !important; /* Dark gray */
+}
+
+.custom-primary-background-color { /* The main body color */
+    background-color: #2b2b2b; /* Darker gray */
+}
+
+.custom-primary-login-card { /* The color of the card containing the form */
+    background-color: #3a3a3a; /* Dark gray */
+}
+
+.custom-primary-login-card-border {
+    border-color: black !important;
+}
+
+.custom-navbar-bg { /* The color of the navigation bar */
+    background-color: #1c1c1c; /* Very dark gray */
+}
+
+.custom-primary-white-text-color { /* The white text color */
+    color: white !important; /* White text */
+}
+
+.custom-form-control:active {
+    border-color: forestgreen !important; /* Desired focus border color */
+    box-shadow: 0 0 5px rgba(34, 139, 34, 0.5) !important; /* Custom shadow with forest green */
+}

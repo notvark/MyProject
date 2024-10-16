@@ -1,16 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar-bg">
     <div class="container">
-        <a class="navbar-brand" href="/">My Project</a>
+        <a class="navbar-brand custom-primary-white-text-color" href="/">R2.0</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+                    <NavLink class="nav-link custom-primary-white-text-color" href="/" Match="NavLinkMatch.All">Home</NavLink>
                 </li>
             </ul>
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
@@ -18,15 +18,15 @@
                     <Authorized>
                         <li class="navbar-text"> @context.User.Identity?.Name </li>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Logout" Match="NavLinkMatch.All">Logout</NavLink>
+                            <NavLink class="nav-link custom-primary-white-text-color" href="/Account/Logout" Match="NavLinkMatch.All">Logout</NavLink>
                         </li>
                     </Authorized>
                     <NotAuthorized>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Login" Match="NavLinkMatch.Prefix">Login</NavLink>
+                            <NavLink class="nav-link custom-primary-white-text-color" href="/Account/Login" Match="NavLinkMatch.Prefix">Login</NavLink>
                         </li>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="/Account/Register" Match="NavLinkMatch.Prefix">Register</NavLink>
+                            <NavLink class="nav-link custom-primary-white-text-color" href="/Account/Register" Match="NavLinkMatch.Prefix">Register</NavLink>
                         </li>
                     </NotAuthorized>
                 </AuthorizeView>
