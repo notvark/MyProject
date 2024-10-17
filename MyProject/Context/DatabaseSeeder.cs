@@ -31,8 +31,8 @@ namespace ModelProject.Context
                 await _roleManager.CreateAsync(new IdentityRole("Admin"));
                 await _roleManager.CreateAsync(new IdentityRole("Customer"));
 
-                var adminEmail = "admin@modelhub.com";
-                var adminPassword = "Model£45$";
+                var adminEmail = "admin@r2.com";
+                var adminPassword = "r2ontop";
 
                 var admin = new User
                 {
