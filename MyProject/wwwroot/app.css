@@ -41,7 +41,7 @@ body { /* Overall body color */
 }
 
 .custom-primary-login-card-border {
-    border-color: black !important;
+    border: black !important;
 }
 
 .custom-navbar-bg { /* The color of the navigation bar */
@@ -52,7 +52,14 @@ body { /* Overall body color */
     color: white !important; /* White text */
 }
 
-.custom-form-control:active {
-    border-color: forestgreen !important; /* Desired focus border color */
-    box-shadow: 0 0 5px rgba(34, 139, 34, 0.5) !important; /* Custom shadow with forest green */
+.form-control:focus {
+    border: 2px solid #228B22;
+    border-color: #228B22 !important; /* Focus border color */
+    box-shadow: 0 0 5px rgba(34, 139, 34, 0.5) !important; /* Shadow for forest green */
+    outline: none; /* Remove the default blue outline */
+}
+
+.btn-gold {
+    background-color: gold;
+    color : black;
 }
