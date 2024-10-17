@@ -15,11 +15,16 @@
 
         user_name = "Guest";
 
-        var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+        var context = httpContextAccessor.HttpContext; //instead of making multiple requests, make one request
 
-        if (currentUser != null)
+        if (context != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
         {
-            user_name = currentUser.UserName;
+            var currentUser = await userManager.GetUserAsync(context.User); //userManager is responsible for information based on a user, getuserasync retrives information basied off of context.User as it represents the authenticated user
+
+            if (currentUser != null)
+            {
+                user_name = currentUser.UserName; // ASP.NET Core identity name retrieval
+            }
         }
 
     }

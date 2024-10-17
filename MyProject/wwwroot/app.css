@@ -52,6 +52,10 @@ body { /* Overall body color */
     color: white !important; /* White text */
 }
 
+.custom-primary-red-text-color {
+    color: #DC143C !important; /* Red text */
+}
+
 .custom-primary-footer-text-color {
     color: #555555;
 }
@@ -63,7 +67,6 @@ body { /* Overall body color */
     outline: none; /* Remove the default blue outline */
 }
 
-.btn-gold {
-    background-color: gold;
-    color : black;
-}
+
+
+
