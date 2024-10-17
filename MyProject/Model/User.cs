@@ -22,5 +22,9 @@ namespace MyProject.Model
         public List<Chat> ReceivedChats { get; set; }  // User receiving the chat
         public List<Follower> FollowedUsers { get; set; }
         public List<Follower> FollowingUsers { get; set; }
+
+    /* Custom functions below */
+
+
     }
 }

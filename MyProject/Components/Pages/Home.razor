@@ -1,7 +1,35 @@
-﻿@page "/"
+﻿@using Microsoft.AspNetCore.Identity
+@using MyProject.Model
+@using Microsoft.AspNetCore.Http
+
+@page "/"
+@inject UserManager<User> userManager
+@inject IHttpContextAccessor httpContextAccessor
+
+@code {
+
+    private string user_name;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        user_name = "Guest";
+
+        var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+
+        if (currentUser != null)
+        {
+            user_name = currentUser.UserName;
+        }
+
+    }
+
+}
+
 
 
 <PageTitle>Home</PageTitle>
 
-<h1 class="custom-primary-white-text-color">Hello, User.</h1>
+<h1 class="custom-primary-white-text-color">Hello, @user_name.</h1>
+<p class="custom-primary-footer-text-color">In order to change this username please head to settings.</p>
 
