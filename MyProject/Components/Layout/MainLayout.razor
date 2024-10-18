@@ -12,6 +12,13 @@
                 <li class="nav-item">
                     <NavLink class="nav-link custom-primary-white-text-color" href="/" Match="NavLinkMatch.All">Home</NavLink>
                 </li>
+
+                <AuthorizeView> 
+                    <li class="nav-item">
+                        <NavLink class="nav-link custom-primary-white-text-color" href="/Home/Notepad" Match="NavLinkMatch.Prefix">Notes</NavLink> @*Notepad*@
+                    </li>
+                </AuthorizeView> @*Allows me to add redirects to implements*@
+
             </ul>
             <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
                 <AuthorizeView>
