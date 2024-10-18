@@ -44,6 +44,10 @@ body { /* Overall body color */
     border: black !important;
 }
 
+.custom-primary-notepad-card-border {
+    border: black !important;
+}
+
 .custom-navbar-bg { /* The color of the navigation bar */
     background-color: #1c1c1c; /* Very dark gray */
 }

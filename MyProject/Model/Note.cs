@@ -1,4 +1,6 @@
-﻿namespace MyProject.Model
+﻿using System.Threading.Tasks;
+
+namespace MyProject.Model
 {
     public class Note
     {
