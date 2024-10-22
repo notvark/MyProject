@@ -1,0 +1,71 @@
+﻿@using MyProject.Context
+@using MyProject.Model;
+@using Microsoft.AspNetCore.Http @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
+
+@inject NoteProvider NoteProvider;
+@inject NavigationManager NavigationManager;
+@inject UserManager<User> userManager; 
+@*For retrieving client ID*@
+@inject IHttpContextAccessor httpContextAccessor; 
+@*For retrieving client ID*@
+
+<EditForm Model = "@Note" OnValidSubmit="@HandleSubmit">
+    <div class="d-flex justify-content-center p-2">
+        <div class="card custom-primary-notepad-card-border" style="max-width: 800px; width: 100%;">
+            <div class="card-body custom-primary-background-color">
+                <h4 class="card-title custom-primary-white-text-color">Create Note</h4>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <input type="text" class="form-control" placeholder="Note Content" aria-label="NoteContent">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary w-100">Save Note</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {   
+        var context = httpContextAccessor.HttpContext;
+        var currentUser = await userManager.GetUserAsync(context.User);
+        var userId = currentUser.Id; // Can't be null, page only accessible by Authorized Users, ignore
+
+        UserId = userId;
+    }
+
+    private string UserId { get; set; } //To transfer value from function above
+
+
+    [Parameter]
+
+    public Note? Note { get; set; }
+
+    private NoteProvider Model { get; set; }
+
+    private async Task HandleSubmit()
+    {
+        var note = Note ?? new Note();
+
+        note.NoteContent = Note.NoteContent;
+        //note.User = UserId;
+
+        if (note.NoteContent == "")
+        {
+            return;
+        }
+
+        else
+        {
+            await NoteProvider.AddNoteAsync(note);
+            NavigationManager.NavigateTo("/");
+        }
+
+    }
+
+}
