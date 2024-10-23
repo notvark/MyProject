@@ -17,10 +17,10 @@
                 <h4 class="card-title custom-primary-white-text-color">Create Note</h4>
                 <div class="row g-3">
                     <div class="col-12">
-                        <input type="text" class="form-control" placeholder="Note Content" aria-label="NoteContent">
+                        <input type="text" class="form-control" @bind="Note.NoteContent" placeholder="Note Content" aria-label="NoteContent">
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary w-100">Save Note</button>
+                        <button type="submit" class="btn btn-success w-100">Save Note</button>
                     </div>
                 </div>
             </div>
@@ -28,44 +28,57 @@
     </div>
 </EditForm>
 
+<div class="d-flex justify-content-center p-2">
+    <ul class="list-group" style="max-width: 800px; width: 100%;">
+        @foreach (var note in notes)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
+                <div>
+                    <strong>@note.User.UserName:</strong> @note.NoteContent
+                </div>
+                <button class="btn btn-danger btn-sm" @onclick="() => DeleteNote(note)">Delete</button>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
 @code {
+
+    private User UserId { get; set; } //To transfer value from function above
+    private Note Note { get; set; } = new Note();
+    private List<Note> notes;
 
     protected override async Task OnInitializedAsync()
     {   
         var context = httpContextAccessor.HttpContext;
         var currentUser = await userManager.GetUserAsync(context.User);
-        var userId = currentUser.Id; // Can't be null, page only accessible by Authorized Users, ignore
+        UserId = currentUser; // Can't be null, page only accessible by Authorized Users, ignore
 
-        UserId = userId;
+        notes = await NoteProvider.GetNoteByUserAsync(UserId);
     }
-
-    private string UserId { get; set; } //To transfer value from function above
-
-
-    [Parameter]
-
-    public Note? Note { get; set; }
-
-    private NoteProvider Model { get; set; }
 
     private async Task HandleSubmit()
     {
-        var note = Note ?? new Note();
-
-        note.NoteContent = Note.NoteContent;
-        //note.User = UserId;
-
-        if (note.NoteContent == "")
+        if (string.IsNullOrWhiteSpace(Note.NoteContent))
         {
-            return;
+            return;    
         }
 
-        else
-        {
-            await NoteProvider.AddNoteAsync(note);
-            NavigationManager.NavigateTo("/");
-        }
+        Note.User = UserId;
+
+        await NoteProvider.AddNoteAsync(Note);
+        Note = new Note(); //removes input from form
+        notes = await NoteProvider.GetNoteByUserAsync(UserId); //refreshes notes without issues
 
     }
+
+    private async Task DeleteNote(Note note)
+    {
+        await NoteProvider.DeleteNoteAsync(note);
+        notes = await NoteProvider.GetNoteByUserAsync(UserId); //refreshes notes without issues
+    }
+
 
 }
