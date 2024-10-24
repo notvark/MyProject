@@ -2,15 +2,19 @@
 @using MyProject.Model;
 @using Microsoft.AspNetCore.Http @*For retrieving client ID*@
 @using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Components.Authorization @*Page only accessible by those authorized*@
+@inherits LayoutComponentBase
+
 
 @inject NoteProvider NoteProvider;
 @inject NavigationManager NavigationManager;
-@inject UserManager<User> userManager; 
+@inject UserManager<User> userManager;
 @*For retrieving client ID*@
-@inject IHttpContextAccessor httpContextAccessor; 
+@inject IHttpContextAccessor httpContextAccessor;
 @*For retrieving client ID*@
 
-<EditForm Model = "@Note" OnValidSubmit="@HandleSubmit">
+
+<EditForm Model="@Note" OnValidSubmit="@HandleSubmit">
     <div class="d-flex justify-content-center p-2">
         <div class="card custom-primary-notepad-card-border" style="max-width: 800px; width: 100%;">
             <div class="card-body custom-primary-background-color">
@@ -51,7 +55,7 @@
     private List<Note> notes;
 
     protected override async Task OnInitializedAsync()
-    {   
+    {
         var context = httpContextAccessor.HttpContext;
         var currentUser = await userManager.GetUserAsync(context.User);
         UserId = currentUser; // Can't be null, page only accessible by Authorized Users, ignore
@@ -63,7 +67,7 @@
     {
         if (string.IsNullOrWhiteSpace(Note.NoteContent))
         {
-            return;    
+            return;
         }
 
         Note.User = UserId;
@@ -79,6 +83,5 @@
         await NoteProvider.DeleteNoteAsync(note);
         notes = await NoteProvider.GetNoteByUserAsync(UserId); //refreshes notes without issues
     }
-
-
 }
+
