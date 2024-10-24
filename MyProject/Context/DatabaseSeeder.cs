@@ -32,13 +32,15 @@ namespace ModelProject.Context
                 await _roleManager.CreateAsync(new IdentityRole("Customer"));
 
                 var adminEmail = "admin@r2.com";
-                var adminPassword = "r2ontop";
+                var adminPassword = "$Ahmed902_";
 
                 var admin = new User
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
                 };
+
+
                 await _userManager.CreateAsync(admin, adminPassword);
                 await _userManager.AddToRoleAsync(admin, "Admin");
 
