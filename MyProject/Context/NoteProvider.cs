@@ -13,7 +13,7 @@ namespace MyProject.Context
             _context = context;
         }
 
-        public async Task<List<Note>> GetAllNotesAsync()
+        public async Task<List<Note>> GetAllForumsAsync()
         {
             return await _context.Notes.ToListAsync();
         }

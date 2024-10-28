@@ -1,0 +1,46 @@
+﻿using Microsoft.EntityFrameworkCore;
+using MyProject.Model;
+
+namespace MyProject.Context
+{
+    public class PostProvider
+    {
+
+        private readonly DatabaseContext _context;
+
+        public PostProvider(DatabaseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Post>> GetAllPostsAsync()
+        {
+            return await _context.Posts.ToListAsync();
+        }
+
+        public async Task<List<Post>> GetPostByUserAsync(User user)
+        {
+            if (user == null)
+            {
+                return new List<Post>();
+            }
+
+            return await _context.Posts
+                .Where(post => post.User.Id == user.Id)
+                .ToListAsync();
+        }
+
+        public async Task AddPostAsync(Post post)
+        {
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeletePostAsync(Post post)
+        {
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+        }
+
+    }
+}
