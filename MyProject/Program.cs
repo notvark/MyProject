@@ -26,6 +26,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<NoteProvider>();
 builder.Services.AddScoped<PostProvider>();
+builder.Services.AddScoped<PostCommentProvider>();
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<DatabaseContext>()

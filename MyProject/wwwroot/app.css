@@ -75,6 +75,13 @@ body { /* Overall body color */
     outline: none; /* Remove the default blue outline */
 }
 
+.custom-comment-separate-line {
+    height: 5px;
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+}
+
 
 
 

@@ -1,10 +1,21 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using MyProject.Model
-@using Microsoft.AspNetCore.Http
+﻿@using MyProject.Model
+@using MyProject.Context
+@using MyProject.Components.Shared
+@using Microsoft.AspNetCore.Http @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Components.Authorization @*Page only accessible by those authorized*@
 
 @page "/"
 @inject UserManager<User> userManager
 @inject IHttpContextAccessor httpContextAccessor
+@inject PostProvider PostProvider;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Home</PageTitle>
+
+<h1 class="custom-primary-white-text-color">Hello, @user_name.</h1>
+
+<HomePostsDisplay />
 
 @code {
 
@@ -30,10 +41,3 @@
     }
 
 }
-
-
-
-<PageTitle>Home</PageTitle>
-
-<h1 class="custom-primary-white-text-color">Hello, @user_name.</h1>
-
