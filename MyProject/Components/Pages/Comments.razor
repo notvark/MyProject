@@ -17,9 +17,8 @@
         <div class="card mb-3 text-light" style="background-color: black; border-radius: 8px; width: 800px;">
             <div class="card-body">
                 <div class="position-absolute top-0 end-0 p-2">
-                    <a href="/profile/@Post.User.UserName">
-                        @Post.User.UserName
-                    </a>
+                    <i class="fas fa-user user-icon"></i>
+                    <a href="/profile/@Post.User.UserName" class="user-link">@Post.User.UserName</a>
                 </div>
 
                 <div>
@@ -27,11 +26,10 @@
                     <p class="card-text">@Post?.Description</p>
                 </div>
 
-                <div class="custom-comment-separate-line mb-3"></div> <!-- Add margin bottom -->
+                <div class="custom-comment-separate-line mb-3"></div>
 
                 <EditForm Model="@PostComment" OnValidSubmit="@HandleSubmit">
                     <div class="col-12 mb-2">
-                        <!-- Add margin bottom -->
                         <input type="text" class="form-control" @bind="PostComment.Comment" placeholder="Content" aria-label="PostContent">
                     </div>
                     <div class="col-md-12">
@@ -48,19 +46,30 @@
     <ul class="list-group" style="max-width: 800px; width: 100%;">
         @foreach (var comment in postcomments)
         {
-            <li class="list-group-item d-flex justify-content-between align-items-center custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
-                <div>
-                    <strong>@comment.User.UserName:</strong> @comment.Comment
+            <li class="list-group-item d-flex justify-content-between align-items-start custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
+
+                <div style="flex-grow: 1;">
+                    <strong>
+                        <i class="fas fa-user user-icon"></i>
+                        <a href="/profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
+                    </strong>
+                    <p class="pt-3">@comment.Comment</p>
+                    <p class="sent-time">
+                        <i class="fas fa-calendar-alt"></i> @comment.CommentSentTime.ToString("MMMM dd, yyyy")
+                        <br />
+                        <i class="fas fa-clock"></i> @comment.CommentSentTime.ToString("hh:mm tt")
+                    </p>
                 </div>
 
-                @if (comment.User == User || Post.User == User){
-                    <button class="btn btn-danger btn-sm" @onclick="() => DeletePostComment(comment)">Delete</button>
+                @if (comment.User == User || Post.User == User)
+                {
+                    <button class="btn btn-danger btn-sm mt-1" style="align-self: flex-start;">Delete</button>
                 }
-
             </li>
         }
     </ul>
 </div>
+
 
 @code {
 

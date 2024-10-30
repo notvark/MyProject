@@ -36,15 +36,23 @@
     <ul class="list-group" style="max-width: 800px; width: 100%;">
         @foreach (var note in notes)
         {
-            <li class="list-group-item d-flex justify-content-between align-items-center custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
-                <div>
-                    <strong>@note.User.UserName:</strong> @note.NoteContent
+            <li class="list-group-item d-flex justify-content-between align-items-start custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
+                <div style="flex-grow: 1;">
+                    <strong>
+                        <i class="fas fa-user user-icon"></i>
+                        <a href="/profile/@note.User.UserName" class="user-link">@note.User.UserName:</a>
+                    </strong>
+                    <p class="pt-3 pb-3" style="margin: 0;">@note.NoteContent</p>
                 </div>
-                <button class="btn btn-danger btn-sm" @onclick="() => DeleteNote(note)">Delete</button>
+                <button class="btn btn-danger btn-sm mt-1" @onclick="() => DeleteNote(note)" style="align-self: flex-start;">Delete</button>
             </li>
+
+                
         }
     </ul>
 </div>
+
+
 
 
 

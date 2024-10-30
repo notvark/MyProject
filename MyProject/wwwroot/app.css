@@ -86,6 +86,26 @@ body { /* Overall body color */
     width: 100%;
 }
 
+.user-icon {
+    color: #555; /* Icon color */
+    font-size: 1.25rem; /* Icon size */
+}
 
+.user-link {
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color for the username */
+    font-weight: 500; /* Optional: make the username slightly bolder */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+.user-link:hover {
+     color: #007bff; /* Change color on hover */
+}
+
+.sent-time {
+    display: block !important;
+    margin-bottom: 0.1rem !important;
+    color: #ccc !important;
+}
 
 

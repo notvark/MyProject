@@ -14,8 +14,6 @@
 @inject UserManager<User> userManager;
 @inject IHttpContextAccessor httpContextAccessor;
 
-
-
 <div class="d-flex justify-content-center p-2">
     <ul class="list-group" style="max-width: 800px; width: 100%;">
         @foreach (var post in posts)
@@ -23,19 +21,18 @@
             <div class="card mb-3 text-light positive-relative" style="background-color: black; border-radius: 8px; width: 800px;">
                 <div class="card-body">
 
-
-
                     <div class="position-absolute top-0 end-0 p-2">
 
                         @{
                             var userName = ReturnAuthorOfPosts(post);
                         }
 
-                        <a href="/profile/@userName">
-                            @userName
-                        </a>
-                    </div>
+                        <div>
+                            <i class="fas fa-user user-icon"></i>
+                            <a href="/profile/@userName" class="user-link">@userName</a>
+                        </div>
 
+                    </div>
 
                     <div>
                         <h3 class="card-title"><strong>@post.Title</strong></h3>
@@ -46,7 +43,7 @@
 
                     <div class="mt-3 mb-3">
                         <a href="/Forums/Comment/@post.Id" class="btn btn-primary btn-sm">
-                            Comment (@ReturnCommentCount(post))
+                            <i class="fas fa-comment"></i> Comment (@ReturnCommentCount(post))
                         </a>
                     </div>
 
