@@ -48,6 +48,10 @@ body { /* Overall body color */
     border: black !important;
 }
 
+.custom-primary-comment-card-border {
+    border: black !important;
+}
+
 .custom-primary-post-card-border {
     border: black !important;
 }

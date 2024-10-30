@@ -1,0 +1,115 @@
+﻿@page "/Forums/Comment/{id:int}"
+
+@using MyProject.Context
+@using MyProject.Model;
+@using Microsoft.AspNetCore.Http @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Components.Authorization @*Page only accessible by those authorized*@
+@inherits LayoutComponentBase
+
+@inject PostProvider postProvider
+@inject PostCommentProvider postCommentProvider
+@inject UserManager<User> userManager
+@inject IHttpContextAccessor httpContextAccessor
+
+<div class="d-flex justify-content-center p-2">
+    <ul class="list-group" style="max-width: 800px; width: 100%;">
+        <div class="card mb-3 text-light" style="background-color: black; border-radius: 8px; width: 800px;">
+            <div class="card-body">
+                <div class="position-absolute top-0 end-0 p-2">
+                    <a href="/profile/@Post.User.UserName">
+                        @Post.User.UserName
+                    </a>
+                </div>
+
+                <div>
+                    <h3 class="card-title"><strong>@Post?.Title</strong></h3>
+                    <p class="card-text">@Post?.Description</p>
+                </div>
+
+                <div class="custom-comment-separate-line mb-3"></div> <!-- Add margin bottom -->
+
+                <EditForm Model="@PostComment" OnValidSubmit="@HandleSubmit">
+                    <div class="col-12 mb-2">
+                        <!-- Add margin bottom -->
+                        <input type="text" class="form-control" @bind="PostComment.Comment" placeholder="Content" aria-label="PostContent">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-success w-100">Comment</button>
+                    </div>
+                </EditForm>
+
+            </div>
+        </div>
+    </ul>
+</div>
+
+<div class="d-flex justify-content-center">
+    <ul class="list-group" style="max-width: 800px; width: 100%;">
+        @foreach (var comment in postcomments)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
+                <div>
+                    <strong>@comment.User.UserName:</strong> @comment.Comment
+                </div>
+
+                @if (comment.User == User || Post.User == User){
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeletePostComment(comment)">Delete</button>
+                }
+
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+
+    [Parameter] // Makes it accessible from the route/path.
+    public int id { get; set; }
+
+    private User User { get; set; }
+    private PostComment PostComment { get; set; } = new PostComment();
+    private MyProject.Model.Post Post { get; set; }
+    private List<PostComment> postcomments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = httpContextAccessor.HttpContext;
+        User = await userManager.GetUserAsync(context.User);
+        
+
+        Post = await postProvider.GetPostByIdAsync(id);
+        postcomments = await postCommentProvider.GetCommentByPostAsync(Post);
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(PostComment.Comment))
+        {
+            return;
+        }
+
+        var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+        if (currentUser == null)
+        {
+            return;
+        }
+
+        PostComment.Post = Post;
+        PostComment.User = currentUser;
+        PostComment.CommentSentTime = DateTime.UtcNow;
+
+        await postCommentProvider.AddPostCommentAsync(PostComment);
+        PostComment = new PostComment(); //removes input from form
+
+        postcomments = await postCommentProvider.GetCommentByPostAsync(Post); //refreshes comments without issues
+
+    }
+
+    private async Task DeletePostComment(PostComment comment)
+    {
+        await postCommentProvider.DeletePostCommentAsync(comment);
+        postcomments = await postCommentProvider.GetCommentByPostAsync(Post); //refreshes notes without issues
+    }
+
+}

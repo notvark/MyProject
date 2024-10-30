@@ -7,6 +7,7 @@
 
 
 @inject PostProvider PostProvider;
+@inject PostCommentProvider PostCommentProvider;
 @inject NavigationManager NavigationManager;
 @inject UserManager<User> userManager;
 @*For retrieving client ID*@
@@ -39,20 +40,26 @@
     <ul class="list-group" style="max-width: 800px; width: 100%;">
         @foreach (var post in posts)
         {
-            <div class="card mb-3 text-light position-relative" style="background-color: black; border-radius: 8px;">
+            <div class="card mb-3 text-light position-relative" style="background-color: black; border-radius: 8px; width: 800px;">
                 <div class="card-body">
-                    <!-- Author link in top-right corner -->
-                    <div class="position-absolute top-0 end-0 p-2">
-                        <a href="/profile/@post.User.UserName">
-                            @post.User.UserName
+
+                    <div>
+                        <h3 class="card-title"><strong>@post.Title</strong></h3>
+                        <p class="card-text">@post.Description</p>
+                    </div>
+
+                    <div class="custom-comment-separate-line"></div>
+
+                    <div class="mt-3 mb-3">
+                        <button class="btn btn-danger btn-sm mt-1" @onclick="() => DeletePost(post)">Delete</button>
+
+                        <a href="/Forums/Comment/@post.Id" class="btn btn-primary btn-sm mt-1">
+                            @(postCommentCounts.TryGetValue(post.Id, out var commentCount) ? $"View Comments ({commentCount})" : "View Comments (0)")
                         </a>
                     </div>
 
-                    <h3 class="card-title"><strong>@post.Title</strong></h3>
-                    <p class="card-text">@post.Description</p>
+                    <footer class="mt-2">Post Created : @post.PostCreatedAt</footer>
 
-                    <!-- Delete button at the bottom -->
-                    <button class="btn btn-danger btn-sm mt-1" @onclick="() => DeletePost(post)">Delete</button>
                 </div>
             </div>
         }
@@ -60,11 +67,15 @@
 </div>
 
 
+
+
+
 @code {
 
     private User UserId { get; set; } //To transfer value from function above
     private Post Post { get; set; } = new Post();
     private List<Post> posts;
+    private Dictionary<int, int> postCommentCounts = new Dictionary<int, int>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,6 +84,12 @@
         UserId = currentUser; // Can't be null, page only accessible by Authorized Users, ignore
 
         posts = await PostProvider.GetPostByUserAsync(UserId);
+
+        foreach (var post in posts)
+        {
+            var comments = await PostCommentProvider.GetCommentByPostAsync(post);
+            postCommentCounts[post.Id] = comments.Count;
+        }
     }
 
     private async Task HandleSubmit()
@@ -89,6 +106,7 @@
         await PostProvider.AddPostAsync(Post);
         Post = new Post(); //removes input from form
         posts = await PostProvider.GetPostByUserAsync(UserId); //refreshes posts without issues
+
 
     }
 

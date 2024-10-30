@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProject.Model;
+using System.Runtime.CompilerServices;
 
 namespace MyProject.Context
 {

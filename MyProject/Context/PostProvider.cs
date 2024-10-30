@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProject.Model;
+using SQLitePCL;
 
 namespace MyProject.Context
 {
@@ -11,6 +12,11 @@ namespace MyProject.Context
         public PostProvider(DatabaseContext context)
         {
             _context = context;
+        }
+
+        public async Task<Post> GetPostByIdAsync(int postId)
+        {
+            return await _context.Posts.FindAsync(postId);
         }
 
         public async Task<List<Post>> GetAllPostsAsync()
