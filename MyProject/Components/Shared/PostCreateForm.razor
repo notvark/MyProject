@@ -40,8 +40,21 @@
     <ul class="list-group" style="max-width: 800px; width: 100%;">
         @foreach (var post in posts)
         {
-            <div class="card text-light position-relative" style="background-color: black; border-radius: 8px; width: 800px;">
+            <div class="card mb-2 text-light position-relative" style="background-color: black; border-radius: 8px; width: 800px;">
                 <div class="card-body">
+
+                    <div class="position-absolute top-0 end-0 p-2">
+
+                        @{
+                            var userName = ReturnAuthorOfPosts(post);
+                        }
+
+                        <div>
+                            <i class="fas fa-user user-icon-owner"></i>
+                            <a href="/profile/@userName" class="user-link-owner">@userName</a>
+                        </div>
+
+                    </div>
 
                     <div>
                         <h3 class="card-title"><strong>@post.Title</strong></h3>
@@ -88,7 +101,6 @@
         UserId = currentUser; // Can't be null, page only accessible by Authorized Users, ignore
 
         posts = await PostProvider.GetPostByUserAsync(UserId);
-
     }
 
     private async Task HandleSubmit()
@@ -118,6 +130,11 @@
     private int ReturnCommentCount(Post post)
     {
         return PostCommentProvider.CountCommentsForPostAsync(post);
+    }
+
+    private string ReturnAuthorOfPosts(Post post)
+    {
+        return PostProvider.GetUserByPost(post);
     }
 
 }

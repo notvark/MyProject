@@ -17,8 +17,22 @@
         <div class="card mb-3 text-light" style="background-color: black; border-radius: 8px; width: 800px;">
             <div class="card-body">
                 <div class="position-absolute top-0 end-0 p-2">
-                    <i class="fas fa-user user-icon"></i>
-                    <a href="/profile/@Post.User.UserName" class="user-link">@Post.User.UserName</a>
+
+                    @{
+                        var postAuthor = ReturnAuthorOfPost(Post);
+                    }
+
+                    @if (user_name == postAuthor)
+                    {
+                        <i class="fas fa-user user-icon-owner"></i>
+                        <a href="/profile/@Post.User.UserName" class="user-link-owner">@Post.User.UserName</a>
+                    }
+                    else
+                    {
+                        <i class="fas fa-user user-icon"></i>
+                        <a href="/profile/@Post.User.UserName" class="user-link">@Post.User.UserName</a>
+                    }
+
                 </div>
 
                 <div>
@@ -49,10 +63,25 @@
             <li class="list-group-item d-flex justify-content-between align-items-start custom-primary-white-text-color border-0 mb-2" style="background-color:black;">
 
                 <div style="flex-grow: 1;">
-                    <strong>
-                        <i class="fas fa-user user-icon"></i>
-                        <a href="/profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
-                    </strong>
+
+                   @{
+                       var commentAuthor = comment.User.UserName;
+                    }
+
+                    @if (user_name == commentAuthor)
+                    {
+                        <strong>
+                            <i class="fas fa-user user-icon-owner"></i>
+                            <a href="/profile/@comment.User.UserName" class="user-link-owner">@comment.User.UserName:</a>
+                        </strong>
+                    }
+                    else{
+                        <strong>
+                            <i class="fas fa-user user-icon"></i>
+                            <a href="/profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
+                        </strong>
+                    }
+
                     <p class="pt-3">@comment.Comment</p>
                     <p class="sent-time">
                         <i class="fas fa-calendar-alt"></i> @comment.CommentSentTime.ToString("MMMM dd, yyyy")
@@ -63,8 +92,9 @@
 
                 @if (comment.User == User || Post.User == User)
                 {
-                    <button class="btn btn-danger btn-sm mt-1" style="align-self: flex-start;">Delete</button>
+                    <button class="btn btn-danger btn-sm mt-1" style="align-self: flex-start;" @onclick="() => DeletePostComment(comment)">Delete</button>
                 }
+
             </li>
         }
     </ul>
@@ -80,15 +110,26 @@
     private PostComment PostComment { get; set; } = new PostComment();
     private MyProject.Model.Post Post { get; set; }
     private List<PostComment> postcomments;
+    private string user_name;
+    private Model.Post modelPost;
 
     protected override async Task OnInitializedAsync()
     {
-        var context = httpContextAccessor.HttpContext;
-        User = await userManager.GetUserAsync(context.User);
-        
-
         Post = await postProvider.GetPostByIdAsync(id);
         postcomments = await postCommentProvider.GetCommentByPostAsync(Post);
+
+        var context = httpContextAccessor.HttpContext; //instead of making multiple requests, make one request
+
+        if (context != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
+        {
+            var currentUser = await userManager.GetUserAsync(context.User); //userManager is responsible for information based on a user, getuserasync retrives information basied off of context.User as it represents the authenticated user
+
+            if (currentUser != null)
+            {
+                user_name = currentUser.UserName; // ASP.NET Core identity name retrieval
+            }
+        }
+
     }
 
     private async Task HandleSubmit()
@@ -113,6 +154,11 @@
 
         postcomments = await postCommentProvider.GetCommentByPostAsync(Post); //refreshes comments without issues
 
+    }
+
+    private string ReturnAuthorOfPost(Model.Post post)
+    {
+        return postProvider.GetUserByPost(post); // Correct usage of the method
     }
 
     private async Task DeletePostComment(PostComment comment)

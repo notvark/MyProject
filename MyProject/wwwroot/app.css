@@ -87,8 +87,8 @@ body { /* Overall body color */
 }
 
 .user-icon {
-    color: #555; /* Icon color */
-    font-size: 1.25rem; /* Icon size */
+    color: #555; 
+    font-size: 1.25rem; 
 }
 
 .user-link {
@@ -98,14 +98,35 @@ body { /* Overall body color */
     transition: color 0.3s; /* Smooth transition for hover effect */
 }
 
-.user-link:hover {
-     color: #007bff; /* Change color on hover */
+    .user-link:hover {
+        color: #007bff; /* Change color on hover */
+    }
+
+/*Success*/
+
+.user-icon-owner {
+    color: #198754;
+    font-size: 1.25rem;
 }
 
+.user-link-owner {
+    text-decoration: none; /* Remove underline */
+    color: #198754; /* Text color for the username */
+    font-weight: 500; /* Optional: make the username slightly bolder */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+    .user-link-owner:hover {
+        text-decoration: none; /* Remove underline */
+        color: #157347; /* Text color for the username */
+        font-weight: 500; /* Optional: make the username slightly bolder */
+        transition: color 0.3s; /* Smooth transition for hover effect */
+    }
+
 .sent-time {
-    display: block !important;
-    margin-bottom: 0.1rem !important;
-    color: #ccc !important;
+    display: block; 
+    margin-bottom: 0.1rem;
+    color: #ccc; 
 }
 
 
