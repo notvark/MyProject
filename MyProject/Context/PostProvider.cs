@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Model;
 using SQLitePCL;
 
@@ -34,6 +35,14 @@ namespace MyProject.Context
             return await _context.Posts
                 .Where(post => post.User.Id == user.Id)
                 .ToListAsync();
+        }
+
+        public string GetUserByPost(Post post)
+        {
+            var users = _context.Users
+            .ToDictionary(user => user.Id, user => user.UserName);
+           
+            return users[post.User.Id]; //returns Username
         }
 
         public async Task AddPostAsync(Post post)

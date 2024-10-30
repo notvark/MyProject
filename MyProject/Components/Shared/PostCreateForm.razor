@@ -54,7 +54,7 @@
                         <button class="btn btn-danger btn-sm mt-1" @onclick="() => DeletePost(post)">Delete</button>
 
                         <a href="/Forums/Comment/@post.Id" class="btn btn-primary btn-sm mt-1">
-                            @(postCommentCounts.TryGetValue(post.Id, out var commentCount) ? $"View Comments ({commentCount})" : "View Comments (0)")
+                            View Comments (@ReturnCommentCount(post))
                         </a>
                     </div>
 
@@ -75,7 +75,7 @@
     private User UserId { get; set; } //To transfer value from function above
     private Post Post { get; set; } = new Post();
     private List<Post> posts;
-    private Dictionary<int, int> postCommentCounts = new Dictionary<int, int>();
+    private int counter;
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,11 +85,6 @@
 
         posts = await PostProvider.GetPostByUserAsync(UserId);
 
-        foreach (var post in posts)
-        {
-            var comments = await PostCommentProvider.GetCommentByPostAsync(post);
-            postCommentCounts[post.Id] = comments.Count;
-        }
     }
 
     private async Task HandleSubmit()
@@ -115,5 +110,11 @@
         await PostProvider.DeletePostAsync(post);
         posts = await PostProvider.GetPostByUserAsync(UserId); //refreshes posts without issues
     }
+
+    private int ReturnCommentCount(Post post)
+    {
+        return PostCommentProvider.CountCommentsForPostAsync(post);
+    }
+
 }
 

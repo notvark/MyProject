@@ -50,5 +50,14 @@ namespace MyProject.Context
             await _context.SaveChangesAsync();
         }
 
+        public int CountCommentsForPostAsync(Post post)
+        {
+            var comment = _context.PostComments
+                .Where(postcomment => postcomment.Post.Id == post.Id)
+                .ToList();
+
+            return comment.Count();
+        } //Testing Function 30/10/24
+
     }
 }
