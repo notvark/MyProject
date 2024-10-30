@@ -8,6 +8,7 @@
 
 
 @inject PostProvider PostProvider;
+@inject PostCommentProvider PostCommentProvider;
 @inject NavigationManager NavigationManager;
 @inject UserManager<User> userManager;
 @*For retrieving client ID*@
@@ -29,6 +30,14 @@
                     <p class="card-text">@post.Description</p>
                     <div class="custom-comment-separate-line" />
 
+                    <EditForm Model="@PostComment" OnValidSubmit="@HandleSubmit(post.Id)">
+                        <div class="col-12">
+                            <input type="text" class="form-control" @bind="PostComment.Comment" placeholder="Comment..." aria-label="PostContent">
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success w-100">Save Note</button>
+                        </div>
+                    </EditForm>
 
                     @*Add comments section*@
 
@@ -41,13 +50,48 @@
 
 @code {
 
+    private User User { get; set; } 
     private Post Post { get; set; } = new Post();
     private List<Post> posts;
+
+    private PostComment PostComment { get; set; } = new PostComment();
+    private List<PostComment> postcomments;
 
     protected override async Task OnInitializedAsync()
     {
 
         posts = await PostProvider.GetAllPostsAsync();
+        postcomments = await PostCommentProvider.GetCommentByPostAsync(Post);
+
+    }
+
+    private async Task HandleSubmit(int postId)
+    {
+        if (string.IsNullOrWhiteSpace(PostComment.Comment))
+        {
+            return;
+        }
+
+        var post = posts.FirstOrDefault(p => p.Id == postId);
+        if (post == null)
+        {
+            return;
+        }
+
+        var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+        if (currentUser == null)
+        {
+            return;
+        }
+
+        PostComment.Post = post;
+        PostComment.User = currentUser;
+        PostComment.CommentSentTime = DateTime.UtcNow;
+
+        await PostCommentProvider.AddPostCommentAsync(PostComment);
+        PostComment = new PostComment(); //removes input from form
+
+        postcomments = await PostCommentProvider.GetCommentByPostAsync(Post); //refreshes notes without issues
 
     }
 
