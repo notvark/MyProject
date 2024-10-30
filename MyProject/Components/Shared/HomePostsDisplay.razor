@@ -1,19 +1,20 @@
 ﻿@using MyProject.Context
 @using MyProject.Model;
 @using MyProject.Components.Shared
-@using Microsoft.AspNetCore.Http @*For retrieving client ID*@
-@using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
-@using Microsoft.AspNetCore.Components.Authorization @*Page only accessible by those authorized*@
-@inherits LayoutComponentBase
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Http 
+@using Microsoft.AspNetCore.Identity 
+@using Microsoft.AspNetCore.Components.Authorization 
 
 
 @inject PostProvider PostProvider;
+@inject DatabaseContext DatabaseContext;
 @inject PostCommentProvider PostCommentProvider;
 @inject NavigationManager NavigationManager;
 @inject UserManager<User> userManager;
-@*For retrieving client ID*@
 @inject IHttpContextAccessor httpContextAccessor;
-@*For retrieving client ID*@
+
+
 
 <div class="d-flex justify-content-center p-2">
     <ul class="list-group" style="max-width: 800px; width: 100%;">
@@ -22,11 +23,33 @@
             <div class="card mb-3 text-light positive-relative" style="background-color: black; border-radius: 8px; width: 800px;">
                 <div class="card-body">
 
+
+
                     <div class="position-absolute top-0 end-0 p-2">
-                        <a href="/profile/@post.User.UserName">
-                            @post.User.UserName
+
+                        @{
+                            string userName;
+
+                            if (post?.User != null)
+                            {
+                                userName = post.User.UserName; 
+                            }
+
+                            else if (post != null && post.User != null && IdAndNameConj.ContainsKey(post.User.Id))
+                            {
+                                userName = IdAndNameConj[post.User.Id]; 
+                            }
+                            else
+                            {
+                                userName = "User not found"; 
+                            }
+                        }
+
+                        <a href="/profile/@userName">
+                            @userName
                         </a>
                     </div>
+
 
                     <div>
                         <h3 class="card-title"><strong>@post.Title</strong></h3>
@@ -55,17 +78,22 @@
     private User User { get; set; }
     private Post Post { get; set; } = new Post();
     private List<Post> posts;
+    private Dictionary<string, string> IdAndNameConj = new Dictionary<string, string>();
 
     private PostComment PostComment { get; set; } = new PostComment();
     private List<PostComment> postcomments;
 
     protected override async Task OnInitializedAsync()
     {
-
         posts = await PostProvider.GetAllPostsAsync();
         postcomments = await PostCommentProvider.GetCommentByPostAsync(Post);
 
+        // Seeding the users into this variable
+        IdAndNameConj = (await DatabaseContext.Users
+            .ToListAsync())
+            .ToDictionary(user => user.Id, user => user.UserName);
     }
+
 
 }
 

@@ -13,7 +13,7 @@ namespace MyProject.Model
         public int? ForumAmount { get; set; }
         public DateTime? CreatedAt { get; set; }
 
-
+        
         // Relationships
         public List<Post> Posts { get; set; }
         public List<PostComment> PostComments { get; set; }
