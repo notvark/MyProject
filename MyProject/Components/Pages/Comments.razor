@@ -25,12 +25,12 @@
                     @if (user_name == postAuthor)
                     {
                         <i class="fas fa-user user-icon-owner"></i>
-                        <a href="/profile/@Post.User.UserName" class="user-link-owner">@Post.User.UserName</a>
+                        <a href="/Home/Profile/@Post.User.UserName" class="user-link-owner">@Post.User.UserName</a>
                     }
                     else
                     {
                         <i class="fas fa-user user-icon"></i>
-                        <a href="/profile/@Post.User.UserName" class="user-link">@Post.User.UserName</a>
+                        <a href="/Home/Profile/@Post.User.UserName" class="user-link">@Post.User.UserName</a>
                     }
 
                 </div>
@@ -64,21 +64,22 @@
 
                 <div style="flex-grow: 1;">
 
-                   @{
-                       var commentAuthor = comment.User.UserName;
+                    @{
+                        var commentAuthor = comment.User.UserName;
                     }
 
                     @if (user_name == commentAuthor)
                     {
                         <strong>
                             <i class="fas fa-user user-icon-owner"></i>
-                            <a href="/profile/@comment.User.UserName" class="user-link-owner">@comment.User.UserName:</a>
+                            <a href="/Home/Profile/@comment.User.UserName" class="user-link-owner">@comment.User.UserName:</a>
                         </strong>
                     }
-                    else{
+                    else
+                    {
                         <strong>
                             <i class="fas fa-user user-icon"></i>
-                            <a href="/profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
+                            <a href="/Home/Profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
                         </strong>
                     }
 
@@ -90,7 +91,9 @@
                     </p>
                 </div>
 
-                @if (comment.User == User || Post.User == User)
+
+
+                @if (user_name == commentAuthor || Post.User == User)
                 {
                     <button class="btn btn-danger btn-sm mt-1" style="align-self: flex-start;" @onclick="() => DeletePostComment(comment)">Delete</button>
                 }

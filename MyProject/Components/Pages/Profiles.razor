@@ -1,0 +1,91 @@
+﻿@page "/Home/Profile/{userName}"
+
+@using MyProject.Context
+@using MyProject.Model;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+
+@inject PostProvider postProvider
+@inject PostCommentProvider postCommentProvider
+@inject UserManager<User> userManager
+@inject IHttpContextAccessor httpContextAccessor
+
+<h3 class="custom-primary-white-text-color">Profile</h3>
+
+<EditForm Model="@User" OnValidSubmit="@HandleSubmit">
+    <div class="card-body custom-primary-background-color">
+        <div class="mb-3 p-3">
+            <label for="UserName" class="form-label custom-primary-white-text-color">Username</label>
+            <InputText id="UserName" class="form-control" @bind-Value="User.UserName" aria-describedby="UsernameHelp" />
+            <div id="UsernameHelp" class="form-text custom-primary-white-text-color">
+                This will change your overall name across the platform, please keep it sensible.
+            </div>
+            <div class="pt-2">
+                <button type="submit" class="btn btn-success w-100">Update Username</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@if (!string.IsNullOrWhiteSpace(feedbackMessage))
+{
+    <p class="mt-2 @(isSuccessful ? "alert alert-primary" : "alert alert-danger")">@feedbackMessage</p>
+}
+
+@code {
+    private User User { get; set; } = new();
+    private string user_name;
+    private string feedbackMessage;
+    private bool isSuccessful;
+
+    [Parameter]
+    public string userName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var context = httpContextAccessor.HttpContext;
+
+        if (context != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
+        {
+            var currentUser = await userManager.GetUserAsync(context.User);
+            if (currentUser != null)
+            {
+                user_name = currentUser.UserName;
+                User = currentUser;
+            }
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(User.UserName))
+        {
+            feedbackMessage = "Username cannot be empty.";
+            isSuccessful = false;
+            return;
+        }
+
+        var existingUser = await userManager.FindByNameAsync(User.UserName);
+        if (existingUser != null && existingUser.Id == User.Id)
+        {
+            feedbackMessage = "This username is already taken. Please choose another one.";
+            isSuccessful = false;
+            return;
+        }
+
+        var result = await userManager.UpdateAsync(User);
+
+        if (result.Succeeded)
+        {
+            feedbackMessage = "Username updated successfully!";
+            isSuccessful = true;
+        }
+        else
+        {
+            feedbackMessage = "Error updating username: " + string.Join(", ", result.Errors.Select(e => e.Description));
+            isSuccessful = false;
+        }
+    }
+}
