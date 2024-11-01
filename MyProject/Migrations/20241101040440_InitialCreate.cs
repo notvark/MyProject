@@ -32,7 +32,7 @@ namespace MyProject.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     ProfilePicture = table.Column<string>(type: "TEXT", nullable: true),
                     Biography = table.Column<string>(type: "TEXT", nullable: true),
-                    BiologicalSex = table.Column<char>(type: "TEXT", nullable: true),
+                    BiologicalSex = table.Column<string>(type: "TEXT", nullable: true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     ForumAmount = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),

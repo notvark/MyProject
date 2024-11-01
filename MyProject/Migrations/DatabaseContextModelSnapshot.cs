@@ -284,7 +284,7 @@ namespace MyProject.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("TEXT");
 
-                    b.Property<char?>("BiologicalSex")
+                    b.Property<string>("BiologicalSex")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")

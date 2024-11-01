@@ -24,26 +24,87 @@
             <h4 class="card-title custom-primary-white-text-color">Register</h4>
             <EditForm OnValidSubmit="RegisterUser" Model="Model" FormName="registerForm">
                 <div class="row g-3">
+
                     <div class="col-md-12">
                         <label for="email" class="form-label custom-primary-white-text-color">Email</label>
                         <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email" />
+                        <div class="small">
+                            <ValidationMessage For="@(() => Model.Email)" />
+                            @if (identityErrors != null && identityErrors.Any(e => e.Description == "Email is already taken."))
+                            {
+                                <div class="text-danger">Email is already taken.</div>
+                            }
+                        </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <label for="userName" class="form-label custom-primary-white-text-color">Username</label>
+                        <InputText class="form-control" placeholder="Username" @bind-Value="Model.UserName" />
+                        <div class="small">
+                            <ValidationMessage For="@(() => Model.UserName)" />
+                            @if (identityErrors != null && identityErrors.Any(e => e.Description == "Username is already taken."))
+                            {
+                                <div class="text-danger">Username is already taken.</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="firstName" class="form-label custom-primary-white-text-color">Full Name</label>
+                        <InputText class="form-control" placeholder="Full Name" @bind-Value="Model.Name" />
+                                            <div class="small">
+                            <ValidationMessage For="@(() => Model!.Name)" />
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <label for="password" class="form-label custom-primary-white-text-color">Password</label>
                         <InputText type="password" class="form-control" placeholder="Password" @bind-Value="Model.Password" />
+                                            <div class="small">
+                            <ValidationMessage For="@(() => Model!.Password)" />
+                        </div>
                     </div>
+
                     <div class="col-md-12">
                         <label for="confirmPassword" class="form-label custom-primary-white-text-color">Confirm Password</label>
                         <InputText type="password" class="form-control" placeholder="Confirm Password" @bind-Value="Model.ConfirmPassword" />
+                        <div class="small">
+                            <ValidationMessage For="@(() => Model!.ConfirmPassword)" />
+                        </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <label for="biologicalSex" class="form-label custom-primary-white-text-color">Biological Sex</label>
+
+                        <div class="btn-group" role="group" aria-label="bioSex" style="width: 100%; height: 38px;">
+                            <input type="radio" class="btn-check" name="btnradio" id="bioMale" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="bioMale">
+                                <i class="fa fa-male" aria-hidden="true"></i> Male
+                            </label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="bioFemale" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="bioFemale">
+                                <i class="fa fa-female" aria-hidden="true"></i> Female
+                            </label>
+                        </div>
+
+                        <div class="small">
+                            <ValidationMessage For="@(() => Model!.BiologicalSex)" />
+                        </div>
+
+                    </div>
+
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </div>
+
                 </div>
             </EditForm>
         </div>
     </div>
 </div>
+
+
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
@@ -57,12 +118,68 @@
     private string? statusMessage => identityErrors is null ? null : string.Join(" ", identityErrors.Select(error => error.Description));
     private bool isError;
 
+
+    private async Task<bool> checkUsernameAsync(string username)
+    {
+        var existingUser = UserManager.FindByNameAsync(username);
+        if (existingUser == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;    
+        }
+    }
+
+    private async Task<bool> checkEmailAsync(string email)
+    {
+        var existingUser = UserManager.FindByEmailAsync(email);
+        if (existingUser == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public async Task RegisterUser(EditContext editContext)
     {
-        var user = Activator.CreateInstance<User>(); ;
-        await UserStore.SetUserNameAsync(user, Model.Email, CancellationToken.None);
-        var emailStore = (IUserEmailStore<User>)UserStore;
-        await emailStore.SetEmailAsync(user, Model.Email, CancellationToken.None);
+
+        identityErrors = null;
+        isError = false;
+
+        if (! await checkUsernameAsync(Model.UserName))
+        {
+            identityErrors = new List<IdentityError>
+            {
+                new IdentityError { Description = "Username is already taken."}
+            };
+            isError = true;
+            return;
+        }
+
+        if (!await checkEmailAsync(Model.Email))
+        {
+            identityErrors = new List<IdentityError>
+            {
+                new IdentityError { Description = "Email is already taken."}
+            };
+            isError = true;
+            return;
+        }
+
+        var user = new User
+        {
+                UserName = Model.UserName,
+                Email = Model.Email,
+                Name = Model.Name,
+                CreatedAt = Model.CreatedAt,
+                BiologicalSex = Model.BiologicalSex
+        };
+
         var result = await UserManager.CreateAsync(user, Model.Password);
 
         if (!result.Succeeded)
@@ -72,23 +189,43 @@
             return;
         }
 
-        //assign the role
         //await UserManager.AddToRoleAsync(user, "Customer");
 
-        //Logger.LogInformation("User created a new account with password.");
-
+        //Log user in
         var userId = await UserManager.GetUserIdAsync(user);
-
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
+
     }
 
     private sealed class RegisterModel
     {
+        [Required(ErrorMessage = "Please enter a valid Username.")]
+        public string UserName { get; set; } = "";
+
+        [Required(ErrorMessage = "Please enter your email.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; } = "";
 
+        [Required(ErrorMessage = "Please enter a valid Full Name.")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "Please enter a password.")]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = "";
 
+        [Required(ErrorMessage = "Please confirm your password.")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        [Required(ErrorMessage = "Please select a valid Biological Sex.")]
+        public string BiologicalSex { get; set; } = "";
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
+
+       }
+
 }
+

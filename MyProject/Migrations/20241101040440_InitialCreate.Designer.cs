@@ -11,7 +11,7 @@ using MyProject.Context;
 namespace MyProject.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241024094616_InitialCreate")]
+    [Migration("20241101040440_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -287,7 +287,7 @@ namespace MyProject.Migrations
                     b.Property<string>("Biography")
                         .HasColumnType("TEXT");
 
-                    b.Property<char?>("BiologicalSex")
+                    b.Property<string>("BiologicalSex")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
