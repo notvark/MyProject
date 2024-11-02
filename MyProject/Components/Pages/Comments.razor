@@ -40,6 +40,12 @@
                     <p class="card-text">@Post?.Description</p>
                 </div>
 
+                <p class="sent-time">
+                    <i class="fas fa-calendar-alt"></i> @Post?.PostCreatedAt.ToString("MMMM dd, yyyy")
+                    <br />
+                    <i class="fas fa-clock"></i> @Post?.PostCreatedAt.ToString("hh:mm tt")
+                </p>
+
                 <div class="custom-comment-separate-line mb-3"></div>
 
                 <EditForm Model="@PostComment" OnValidSubmit="@HandleSubmit">
