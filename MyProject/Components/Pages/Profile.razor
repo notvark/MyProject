@@ -11,23 +11,10 @@
 @inject PostCommentProvider postCommentProvider
 @inject UserManager<User> userManager
 @inject IHttpContextAccessor httpContextAccessor
+@inject NavigationManager NavigationManager
 
-<h3 class="custom-primary-white-text-color">Profile</h3>
 
-<EditForm Model="@User" OnValidSubmit="@HandleSubmit">
-    <div class="card-body custom-primary-background-color">
-        <div class="mb-3 p-3">
-            <label for="UserName" class="form-label custom-primary-white-text-color">Username</label>
-            <InputText id="UserName" class="form-control" @bind-Value="User.UserName" aria-describedby="UsernameHelp" />
-            <div id="UsernameHelp" class="form-text custom-primary-white-text-color">
-                This will change your overall name across the platform, please keep it sensible.
-            </div>
-            <div class="pt-2">
-                <button type="submit" class="btn btn-success w-100">Update Username</button>
-            </div>
-        </div>
-    </div>
-</EditForm>
+<h3 class="custom-primary-white-text-color">@User.UserName's Profile</h3>
 
 @if (!string.IsNullOrWhiteSpace(feedbackMessage))
 {
@@ -68,6 +55,7 @@
         }
 
         var existingUser = await userManager.FindByNameAsync(User.UserName);
+
         if (existingUser != null && existingUser.Id == User.Id)
         {
             feedbackMessage = "This username is already taken. Please choose another one.";
@@ -87,5 +75,6 @@
             feedbackMessage = "Error updating username: " + string.Join(", ", result.Errors.Select(e => e.Description));
             isSuccessful = false;
         }
+
     }
 }

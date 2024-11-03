@@ -35,9 +35,11 @@
                                     <ul class="navbar-nav">
                                         <li class="nav-item dropdown">
                                             <button class="btn dropdown-toggle custom-primary-white-text-color" data-bs-toggle="dropdown" aria-expanded="false">
-                                                @context.User.Identity?.Name
+                                                @context.User.Identity.Name
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-dark"> @*Fix bg color of items*@
+                                                <li><a class="dropdown-item" href="/Home/Profile/@context.User.Identity?.Name">Profile</a></li>
+                                                <li><a class="dropdown-item" href="/Home/Settings">Settings</a></li>
                                                 <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
                                                 <li><a class="dropdown-item custom-primary-red-text-color" href="/Account/Delete">Delete Account</a></li>
                                             </ul>

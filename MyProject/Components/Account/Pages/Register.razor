@@ -27,30 +27,30 @@
 
                     <div class="col-md-12">
                         <label for="email" class="form-label custom-primary-white-text-color">Email</label>
-                        <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email" />
-@*                         <div class="small">
-                            <ValidationMessage For="@(() => Model.Email)" />
-                            @if (identityErrors != null && identityErrors.Any(e => e.Description == "Email is already taken."))
+                        <InputText class="form-control" placeholder="Email" @bind-Value="Model.Email"/>
+                         <div class="small">
+                            <ValidationMessage For="@(() => Model.Email)"/>
+                         @* @if (identityErrors != null && identityErrors.Any(e => e.Description == "Email is already taken."))
                             {
                                 <div class="text-danger">Email is already taken.</div>
-                            }
-                        </div> *@
+                            } *@
+                        </div> 
                     </div>
 
                     <div class="col-md-12">
                         <label for="userName" class="form-label custom-primary-white-text-color">Username</label>
-                        <InputText class="form-control" placeholder="Username" @bind-Value="Model.UserName" />
-@*                         <div class="small">
-                            <ValidationMessage For="@(() => Model.UserName)" />
-                            @if (identityErrors != null && identityErrors.Any(e => e.Description == "Username is already taken."))
+                        <InputText class="form-control" placeholder="Username" @bind-Value="Model.UserName"/>
+                         <div class="small">
+                            <ValidationMessage For="@(() => Model.UserName)"/>
+                         @* @if (identityErrors != null && identityErrors.Any(e => e.Description == "Username is already taken."))
                             {
                                 <div class="text-danger">Username is already taken.</div>
-                            }
-                        </div> *@
+                            } *@
+                        </div>
                     </div>
 
                     <div class="col-md-12">
-                        <label for="firstName" class="form-label custom-primary-white-text-color">Full Name</label>
+                        <label for="fullName" class="form-label custom-primary-white-text-color">Full Name</label>
                         <InputText class="form-control" placeholder="Full Name" @bind-Value="Model.Name" />
                                             <div class="small">
                             <ValidationMessage For="@(() => Model!.Name)" />
@@ -60,7 +60,7 @@
                     <div class="col-md-12">
                         <label for="password" class="form-label custom-primary-white-text-color">Password</label>
                         <InputText type="password" class="form-control" placeholder="Password" @bind-Value="Model.Password" />
-                                            <div class="small">
+                        <div class="small">
                             <ValidationMessage For="@(() => Model!.Password)" />
                         </div>
                     </div>
