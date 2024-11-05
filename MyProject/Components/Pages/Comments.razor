@@ -35,7 +35,7 @@
 
                 </div>
 
-                <div>
+                <div class="pt-4">
                     <h3 class="card-title"><strong>@Post?.Title</strong></h3>
                     <p class="card-text pt-2">@Post?.Description</p>
                 </div>
@@ -78,14 +78,14 @@
                     {
                         <strong>
                             <i class="fas fa-user user-icon-owner"></i>
-                            <a href="/Home/Profile/@comment.User.UserName" class="user-link-owner">@comment.User.UserName:</a>
+                            <a href="/Home/Profile/@comment.User.UserName" class="user-link-owner">@comment.User.UserName</a>
                         </strong>
                     }
                     else
                     {
                         <strong>
                             <i class="fas fa-user user-icon"></i>
-                            <a href="/Home/Profile/@comment.User.UserName" class="user-link">@comment.User.UserName:</a>
+                            <a href="/Home/Profile/@comment.User.UserName" class="user-link">@comment.User.UserName</a>
                         </strong>
                     }
 
@@ -136,6 +136,7 @@
             if (currentUser != null)
             {
                 user_name = currentUser.UserName; // ASP.NET Core identity name retrieval
+                User = currentUser;
             }
         }
 

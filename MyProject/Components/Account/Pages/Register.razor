@@ -118,21 +118,21 @@
     private string? statusMessage => identityErrors is null ? null : string.Join(" ", identityErrors.Select(error => error.Description));
     private bool isError;
 
-
-    // private async Task<bool> checkUsernameAsync(string username)
-    // {
-    //     var existingUser = await UserManager.FindByNameAsync(username);
-    //     return existingUser != null; 
-    // }
-
-    // private async Task<bool> checkEmailAsync(string email)
-    // {
-    //     var existingUser = await UserManager.FindByEmailAsync(email);
-    //     return existingUser != null; 
-    // }
+    private async Task<bool> CheckEmailAsync(string email)
+    {
+        var existingUser = await UserManager.FindByEmailAsync(email);
+        return existingUser != null; // If the user is found, returns true
+    }
 
     public async Task RegisterUser(EditContext editContext)
     {
+
+        if (await CheckEmailAsync(Model.Email)){
+
+            identityErrors = new List<IdentityError> { new IdentityError { Description = "Email is already taken." } };
+            isError = true;
+            return;
+        }
 
         var user = new User
             {
@@ -143,28 +143,6 @@
                 BiologicalSex = Model.BiologicalSex
             };
 
-        // identityErrors = null;
-        // isError = false;
-
-        // if (await checkUsernameAsync(Model.UserName))
-        // {
-        //     identityErrors = new List<IdentityError>
-        //     {
-        //         new IdentityError { Description = "Username is already taken."}
-        //     };
-        //     isError = true;
-        //     return;
-        // }
-
-        // if (await checkEmailAsync(Model.Email))
-        // {
-        //     identityErrors = new List<IdentityError>
-        //     {
-        //         new IdentityError { Description = "Email is already taken."}
-        //     };
-        //     isError = true;
-        //     return;
-        // }
 
         var result = await UserManager.CreateAsync(user, Model.Password);
 
