@@ -40,7 +40,7 @@ namespace MyProject.Context
         public string GetUserByPost(Post post)
         {
             var users = _context.Users
-            .ToDictionary(user => user.Id, user => user.UserName);
+            .ToDictionary(user => user.Id, user => user.UserName); 
            
             return users[post.User.Id]; //returns Username
         }

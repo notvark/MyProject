@@ -90,19 +90,19 @@
         posts = await PostProvider.GetAllPostsAsync();
         postcomments = await PostCommentProvider.GetCommentByPostAsync(Post);
 
-        var context = httpContextAccessor.HttpContext; //instead of making multiple requests, make one request
+        var context = httpContextAccessor.HttpContext;
 
         if (context != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
         {
-            var currentUser = await userManager.GetUserAsync(context.User); //userManager is responsible for information based on a user, getuserasync retrives information basied off of context.User as it represents the authenticated user
+            var currentUser = await userManager.GetUserAsync(context.User); //await to actually get the User object
 
             if (currentUser != null)
             {
-                user_name = currentUser.UserName; // ASP.NET Core identity name retrieval
+                user_name = currentUser.UserName;
             }
         }
-
     }
+
 
     private int ReturnCommentCount(Post post)
     {
