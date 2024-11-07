@@ -124,12 +124,23 @@
         return existingUser != null; // If the user is found, returns true
     }
 
+    private async Task<bool> CheckPasswordsMatchAsync(string password, string confirmPassword)
+    {
+        return password != confirmPassword;
+    }
+
     public async Task RegisterUser(EditContext editContext)
     {
 
         if (await CheckEmailAsync(Model.Email)){
 
             identityErrors = new List<IdentityError> { new IdentityError { Description = "Email is already taken." } };
+            isError = true;
+            return;
+        }
+
+        if (await CheckPasswordsMatchAsync(Model.Password, Model.ConfirmPassword)){
+            identityErrors = new List<IdentityError> { new IdentityError { Description = "Passwords do not match." } };
             isError = true;
             return;
         }
