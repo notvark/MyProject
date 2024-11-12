@@ -129,12 +129,25 @@
         return password != confirmPassword;
     }
 
+    private async Task<bool> CheckForAppropriateDomain(string email)
+    {
+        string[] parts = email.Split("@");
+        return parts[1].ToLower() != "gmail.com";
+    }
+
     public async Task RegisterUser(EditContext editContext)
     {
 
         if (await CheckEmailAsync(Model.Email)){
 
             identityErrors = new List<IdentityError> { new IdentityError { Description = "Email is already taken." } };
+            isError = true;
+            return;
+        }
+
+        if (await CheckForAppropriateDomain(Model.Email))
+        {
+            identityErrors = new List<IdentityError> { new IdentityError { Description = "Email is not appropriate." } };
             isError = true;
             return;
         }
