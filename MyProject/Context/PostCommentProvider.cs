@@ -54,9 +54,9 @@ namespace MyProject.Context
         {
             var comment = _context.PostComments
                 .Where(postcomment => postcomment.Post.Id == post.Id)
-                .ToList();
+                .Count();
 
-            return comment.Count();
+            return comment;
         } //Testing Function 30/10/24
 
     }
