@@ -1,0 +1,26 @@
+﻿@using MyProject.Context
+@using MyProject.Model;
+@using Microsoft.AspNetCore.Http @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Identity @*For retrieving client ID*@
+@using Microsoft.AspNetCore.Components.Authorization @*Page only accessible by those authorized*@
+@inherits LayoutComponentBase
+
+
+@inject PostProvider PostProvider;
+@* Post provider allows for me to access the functions in PostProvider *@
+@inject PostCommentProvider PostCommentProvider;
+@inject NavigationManager NavigationManager;
+@inject UserManager<User> userManager;
+@*For retrieving client ID*@
+@inject IHttpContextAccessor httpContextAccessor;
+@*For retrieving client ID*@
+
+<form>
+    <div class="mb-3">
+        <label for="Username" class="form-label custom-primary-white-text-color">Username</label>
+        <input type="text" class="form-control" id="searchReference" aria-describedby="searchReference">
+        <div id="serchReference" class="form-text">Enter the username to search.</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
