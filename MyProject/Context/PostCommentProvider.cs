@@ -26,6 +26,13 @@ namespace MyProject.Context
                 .ToListAsync();
         }
 
+        public bool DoesPostLinkedToCommentExist(PostComment PostComment)
+        {
+            var result =  _context.Posts.FindAsync(PostComment.Post);
+            return result == null;
+        }
+                
+
         public async Task<List<PostComment>> GetCommentByUserAsync(User user)
         {
             if (user == null)

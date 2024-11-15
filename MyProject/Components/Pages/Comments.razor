@@ -110,6 +110,10 @@
 </div>
 
 
+
+
+
+
 @code {
 
     [Parameter] // Makes it accessible from the route/path.
@@ -125,7 +129,7 @@
     protected override async Task OnInitializedAsync()
     {
         Post = await postProvider.GetPostByIdAsync(id);
-        postcomments = await postCommentProvider.GetCommentByPostAsync(Post); 
+        postcomments = await postCommentProvider.GetCommentByPostAsync(Post);
         //returning comments from the database itself through the postCommentProvider, as it is linked
 
 
