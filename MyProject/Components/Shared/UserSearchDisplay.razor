@@ -6,7 +6,7 @@
 @inherits LayoutComponentBase
 
 
-@inject PostProvider PostProvider;
+@inject UserManager<User> userManager;
 @* Post provider allows for me to access the functions in PostProvider *@
 @inject PostCommentProvider PostCommentProvider;
 @inject NavigationManager NavigationManager;
@@ -24,3 +24,35 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+@{
+    if (userFound == true)
+    {
+        <div class="card" style="width: 18rem; margin: 1rem auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+            <div class="card-header" style="background-color: #007bff; color: white; font-weight: bold; text-align: center;">
+                User Details
+            </div>
+        </div>
+    }
+}
+
+
+@code{
+    private User searchUsername;
+    private bool userFound;
+
+    private async Task SearchUser()
+    {
+        var user = await userManager.FindByNameAsync(searchUsername.UserName);
+        if (user != null)
+        {
+            userFound = true;
+            return;
+        }
+        else
+        {
+            userFound = false;
+            return;
+        }
+    }
+
+}
