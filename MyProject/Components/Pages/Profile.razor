@@ -14,7 +14,7 @@
 @inject NavigationManager NavigationManager
 
 
-<h3 class="custom-primary-white-text-color">@User.UserName's Profile</h3>
+<h3 class="custom-primary-white-text-color">@searchedUser.UserName's Profile</h3>
 
 @if (!string.IsNullOrWhiteSpace(feedbackMessage))
 {
@@ -23,7 +23,7 @@
 
 @code {
     private User User { get; set; } = new();
-    private string user_name;
+    private User searchedUser = new User();
     private string feedbackMessage;
     private bool isSuccessful;
 
@@ -32,49 +32,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var context = httpContextAccessor.HttpContext;
-
-        if (context != null && context.User.Identity != null && context.User.Identity.IsAuthenticated)
-        {
-            var currentUser = await userManager.GetUserAsync(context.User);
-            if (currentUser != null)
-            {
-                user_name = currentUser.UserName;
-                User = currentUser;
-            }
-        }
-    }
-
-    private async Task HandleSubmit()
-    {
-        if (string.IsNullOrWhiteSpace(User.UserName))
-        {
-            feedbackMessage = "Username cannot be empty.";
-            isSuccessful = false;
-            return;
-        }
-
-        var existingUser = await userManager.FindByNameAsync(User.UserName);
-
-        if (existingUser != null && existingUser.Id == User.Id)
-        {
-            feedbackMessage = "This username is already taken. Please choose another one.";
-            isSuccessful = false;
-            return;
-        }
-
-        var result = await userManager.UpdateAsync(User);
-
-        if (result.Succeeded)
-        {
-            feedbackMessage = "Username updated successfully!";
-            isSuccessful = true;
-        }
-        else
-        {
-            feedbackMessage = "Error updating username: " + string.Join(", ", result.Errors.Select(e => e.Description));
-            isSuccessful = false;
-        }
-
+        searchedUser = await userManager.FindByNameAsync(userName);
     }
 }
